@@ -1,0 +1,3 @@
+{
+    "presets": ["@babel/preset-env"] //최신 문법을 쓰겠다고 선언
+}
