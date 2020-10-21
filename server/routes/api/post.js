@@ -1,4 +1,5 @@
 import express from 'express'
+import auth from '../../middleware/auth';
 
 // Model
 import Post from '../../models/post'
@@ -12,7 +13,7 @@ router.get('/' , async(req, res)=> {
     res.json(postFindResult) //마지막 줄에 응답이 나가야함
 })
 
-router.post('/' , async(req, res) => {
+router.post('/' , auth , async(req, res) => {
     try{
         console.log(req, "req");
         const { title , contents, fileUrl, creator } = req.body;
