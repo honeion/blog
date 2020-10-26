@@ -15,7 +15,7 @@ const sagaMiddleware = createSagaMiddleware()
 const initialState = {}
 
 const middlewares = [sagaMiddleware, routerMiddleware(history)] //미들웨어 필요하면 더 추가
-const devtools = windows.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__//chrome같은 곳에서 어떻게 상태가 진행되는지 볼 수 있는 것
+const devtools = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__//chrome같은 곳에서 어떻게 상태가 진행되는지 볼 수 있는 것
 
 const composeEnhancer = process.env.NODE_ENV ==='production' ? compose : devtools || compose; 
 //개발자 도구를 배포환경에서는 안보이도록
