@@ -1,0 +1,26 @@
+//css이지만 script 파일이라서 변수 사용이 가능
+//css로 반환하기 위해서 
+#main-footer {
+    // background-color: #343a40;
+    background : url('../assets/img/3-f.png');
+    background-size: 100%;
+    color: #fff;
+}
+
+#page-header {
+    height: 200px;
+    background : url('../assets/img/header_img2.jpg');
+    background-size: 100%;
+    background-position: 50% 78%;
+    background-repeat: no-repeat;
+    // background-attachment: fixed;
+    color : #fff;
+    border-bottom: 1px solid #eee;
+    padding-top: 60px;
+}
+
+#navbar {
+    background : url('../assets/img/2-h.png');
+    background-size: 100%;
+    color: #fff;
+}
