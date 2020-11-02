@@ -1,4 +1,4 @@
-import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, CLEAR_ERROR_REQUEST, CLEAR_ERROR_SUCCESS, CLEAR_ERROR_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE } from '../types'
+import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, CLEAR_ERROR_REQUEST, CLEAR_ERROR_SUCCESS, CLEAR_ERROR_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE, REGISTER_FAILURE, REGISTER_SUCCESS, REGISTER_REQUEST } from '../types'
 //초기값 - store에 있는 것과 동일하게 선언해야함
 const initialState = {
     token : localStorage.getItem('token'),
@@ -73,6 +73,7 @@ const authReducer = (state = initialState, action) => {
                 ...state, 
                 errorMsg: ""
             }
+        
         default:
             return state
             

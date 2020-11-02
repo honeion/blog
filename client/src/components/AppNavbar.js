@@ -1,9 +1,10 @@
 import React, { Fragment, useCallback, useEffect, useState } from "react"
-import { Collapse, Container, Navbar, NavbarToggler, Nav } from "reactstrap"
+import { Collapse, Container, Navbar, NavbarToggler, Nav, NavItem, Form, Button } from "reactstrap"
 import { Link } from "react-router-dom"
 import LoginModal from "../components/auth/LoginModal"
 import { useDispatch, useSelector } from "react-redux"
 import { LOGOUT_REQUEST } from "../redux/types"
+import RegisterModal from "./auth/RegisterModal"
 const AppNavbar = () => {
     //인증되었을때 변화
     const [isOpen, setIsOpen] = useState(false);//처음엔 닫아진 상태
@@ -29,6 +30,62 @@ const AppNavbar = () => {
         setIsOpen(!isOpen) //열렸든 닫혔든 토글이 되도록 함수 달아줌
     }
     //isOpen 변수를 통해 Collapse를 여닫는데 isAuthenticated 따라 되도록함
+
+    const addPostClick = () => {
+
+    }
+    //Link 버튼은 화면에서 바로 이동하므로 react-router-dom 사용함
+    //store auth의 user를 가져왔는데 
+    //처음에 react는 빈값으로 렌더링하고, 이후 react가 값을 가져왔는데 
+    //조건식으로 달아주면 undefined라고 가져오는 경우 찾기 좋다
+    //뒤에 block은 꽉채우는 방식
+    const authLink = (
+        <Fragment>
+            <NavItem>
+                {userRole === "Developer" ? (
+                    <Form className="col mt-2">
+                        <Link to="/post" className="btn btn-success block text-white px-3" onClick={addPostClick}>
+                            Add Post
+                        </Link>
+                    </Form>
+                ): ""}
+            </NavItem>
+            <NavItem className="d-flex justify-content-center">
+                <Form className="col mt-2">
+                    {user && user.name ? (
+                        <Link to="#">
+                        <Button outline color="light" className="px-3" block>
+                            <strong>{user ? `Welcome ${user.name}`:""}</strong>
+                        </Button>
+                        </Link>
+                    ):
+                        <Button outline color="light" className="px-3" block>
+                            <strong>No User</strong>
+                        </Button>
+                    }
+                </Form>
+            </NavItem>
+            <NavItem>
+                <Form className="col">
+                    <Link onClick ={onLogout} to="#">
+                        <Button outline color="light" className ="mt-2" block>
+                            Sign out
+                        </Button>
+                    </Link>
+                </Form>
+            </NavItem>
+        </Fragment>
+    )
+    const guestLink = (
+        <Fragment>
+            <NavItem>
+                <RegisterModal/>
+            </NavItem>
+            <NavItem>
+                <LoginModal/>
+            </NavItem>
+        </Fragment>
+    )
     return(
         <Fragment>
             <Navbar id="navbar" expand="lg" className="sticky-top">
@@ -39,7 +96,7 @@ const AppNavbar = () => {
                     <NavbarToggler onClick={handleToggle}/>
                     <Collapse isOpen ={isOpen} navbar>
                         <Nav className="ml-auto d-flex justify-content-around" navbar>
-                            {isAuthenticated ? <h1 className="text-white">authLink</h1> : <LoginModal /> }
+                            {isAuthenticated ? authLink:guestLink }
                         </Nav>
                     </Collapse>
                 </Container>
