@@ -38,7 +38,7 @@ const LoginModal = () => {
         event.preventDefault() //새로 고침 없이 변화된 것만 되어야하므로 막아줌
         const {email, password} = form
         const user = {email, password}
-        console.log(user);
+        console.log("보낸다 이거 ",user);
         dispatch({
             type : LOGIN_REQUEST,
             payload : user

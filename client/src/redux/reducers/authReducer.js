@@ -1,4 +1,4 @@
-import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, CLEAR_ERROR_REQUEST, CLEAR_ERROR_SUCCESS, CLEAR_ERROR_FAILURE } from '../types'
+import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, CLEAR_ERROR_REQUEST, CLEAR_ERROR_SUCCESS, CLEAR_ERROR_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE } from '../types'
 //초기값 - store에 있는 것과 동일하게 선언해야함
 const initialState = {
     token : localStorage.getItem('token'),
@@ -15,6 +15,7 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
     switch(action.type){
         case LOGIN_REQUEST :
+        case LOGOUT_REQUEST: //로그아웃 request는 동일
             return {
                 ...state, //리덕스 쓸 때 기존 상태 복사(얕은복사) 해줘야함
                 isLoading : true,
@@ -32,7 +33,19 @@ const authReducer = (state = initialState, action) => {
                 isLoading       : false,
                 errorMsg        : ""
             }
+        case LOGOUT_SUCCESS :
+            localStorage.removeItem("token");
+            return {
+                token           : null,
+                user            : null,
+                userId          : null,
+                userRole        : null,
+                isAuthenticated : false,
+                isLoading       : false,
+                errorMsg        : ""
+            }
         case LOGIN_FAILURE :
+        case LOGOUT_FAILURE :
             localStorage.removeItem("token");
             return {
                 ...state,
@@ -51,10 +64,10 @@ const authReducer = (state = initialState, action) => {
                 errorMsg: ""
             }
         case CLEAR_ERROR_SUCCESS :
-                return {
-                    ...state, 
-                    errorMsg: ""
-                }
+            return {
+                ...state, 
+                errorMsg: ""
+            }
         case CLEAR_ERROR_FAILURE :
             return {
                 ...state, 
