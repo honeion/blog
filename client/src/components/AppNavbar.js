@@ -8,20 +8,20 @@ import RegisterModal from "./auth/RegisterModal"
 const AppNavbar = () => {
     //인증되었을때 변화
     const [isOpen, setIsOpen] = useState(false);//처음엔 닫아진 상태
-    const {isAuthenticated, user, userRole} = useSelector((state)=>state.auth) //authReducer에 정의한 값
-   
+    const { isAuthenticated, user, userRole } = useSelector((state) => state.auth) //authReducer에 정의한 값
+
     //babel plugin으로 배포단계에서 console.log 제거할 것
-    console.log(isAuthenticated, "isAuthenicated", user, "user", userRole,"UserRole");
+    console.log(isAuthenticated, "isAuthenicated", user, "user", userRole, "UserRole");
     //로그아웃
     const dispatch = useDispatch()
-    
+
     const onLogout = useCallback(() => { //useEffect랑 구조적으로 유사하지만 메모이제이션된 콜백을 반환함([a,b] 이러한 의존성값을 변화될때만 새로 그려주는 형태)
         dispatch({
-            type : LOGOUT_REQUEST
+            type: LOGOUT_REQUEST
         })
     }, [dispatch]) //dispatch가 변할때마다 다시 그려줌
 
-    useEffect(()=>{
+    useEffect(() => {
         setIsOpen(false)
     }, [user]) //user가 변했을때 Open을 변화시켜줌(collection을 여닫을때 사용)
     //모바일 화면에서 로그인하고 나서는 햄버거 버튼이 다시 닫히게 하고자.
@@ -48,17 +48,17 @@ const AppNavbar = () => {
                             Add Post
                         </Link>
                     </Form>
-                ): ""}
+                ) : ""}
             </NavItem>
             <NavItem className="d-flex justify-content-center">
                 <Form className="col mt-2">
                     {user && user.name ? (
                         <Link to="#">
-                        <Button outline color="light" className="px-3" block>
-                            <strong>{user ? `Welcome ${user.name}`:""}</strong>
-                        </Button>
+                            <Button outline color="light" className="px-3" block>
+                                <strong>{user ? `Welcome ${user.name}` : ""}</strong>
+                            </Button>
                         </Link>
-                    ):
+                    ) :
                         <Button outline color="light" className="px-3" block>
                             <strong>No User</strong>
                         </Button>
@@ -67,8 +67,8 @@ const AppNavbar = () => {
             </NavItem>
             <NavItem>
                 <Form className="col">
-                    <Link onClick ={onLogout} to="#">
-                        <Button outline color="light" className ="mt-2" block>
+                    <Link onClick={onLogout} to="#">
+                        <Button outline color="light" className="mt-2" block>
                             Sign out
                         </Button>
                     </Link>
@@ -78,25 +78,25 @@ const AppNavbar = () => {
     )
     const guestLink = (
         <Fragment>
-            <NavItem>
-                <RegisterModal/>
+            <NavItem >
+                <RegisterModal />
             </NavItem>
-            <NavItem>
-                <LoginModal/>
+            <NavItem >
+                <LoginModal />
             </NavItem>
         </Fragment>
     )
-    return(
+    return (
         <Fragment>
             <Navbar id="navbar" expand="lg" className="sticky-top">
                 <Container>
-                    <Link to="/" className ="text-white text-decoration-none">
+                    <Link to="/" className="text-white text-decoration-none">
                         Side Project's Blog(Honeion Blog)
                     </Link>
-                    <NavbarToggler onClick={handleToggle}/>
-                    <Collapse isOpen ={isOpen} navbar>
+                    <NavbarToggler onClick={handleToggle} />
+                    <Collapse isOpen={isOpen} navbar>
                         <Nav className="ml-auto d-flex justify-content-around" navbar>
-                            {isAuthenticated ? authLink:guestLink }
+                            {isAuthenticated ? authLink : guestLink}
                         </Nav>
                     </Collapse>
                 </Container>
