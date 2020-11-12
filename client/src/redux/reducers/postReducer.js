@@ -21,6 +21,7 @@ const postReducer = (state = initialState, action) => {
         case POST_LOADING_REQUEST:
             return {
                 ...state, //초기값 복사해오고, react는 비교해야하니까
+                posts: [],
                 loading: true,
             }
         case POST_LOADING_SUCCESS:

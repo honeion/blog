@@ -24,3 +24,13 @@
     background-size: 100%;
     color: #fff;
 }
+//vh - relativ lengths 
+#main-body {
+    min-width: 90vh;
+}
+// top 적은 것이 이 클래스를 의미
+.card-img-top {
+    width: 100%;
+    height : 20rem;
+    object-fit: cover;
+}
