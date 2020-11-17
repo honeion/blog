@@ -1,4 +1,4 @@
-import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, CLEAR_ERROR_REQUEST, CLEAR_ERROR_SUCCESS, CLEAR_ERROR_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE, REGISTER_FAILURE, REGISTER_SUCCESS, REGISTER_REQUEST } from '../types'
+import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, CLEAR_ERROR_REQUEST, CLEAR_ERROR_SUCCESS, CLEAR_ERROR_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE, USER_LOADING_REQUEST, USER_LOADING_SUCCESS, USER_LOADING_FAILURE } from '../types'
 //초기값 - store에 있는 것과 동일하게 선언해야함
 const initialState = {
     token : localStorage.getItem('token'),
@@ -73,7 +73,29 @@ const authReducer = (state = initialState, action) => {
                 ...state, 
                 errorMsg: ""
             }
-        
+        case USER_LOADING_REQUEST :
+            return {
+                ...state, 
+                isLoading : true,
+            }
+        case USER_LOADING_SUCCESS :
+            return {
+                ...state, 
+                isAuthenticated : true,
+                isLoading : false,
+                user : action.payload, //하나에서 뽑아도 되지만 그냥 따로 빼서 쉽게 처리
+                userId : action.payload._id,
+                userName : action.payload.name,
+                userRole : action.payload.role,
+            }
+        case USER_LOADING_FAILURE :
+            return {
+                ...state, 
+                isAuthenticated : false,
+                isLoading : false,
+                user : null,
+                userRole : "",
+            }
         default:
             return state
             

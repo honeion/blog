@@ -11,7 +11,7 @@ const AppNavbar = () => {
     const {isAuthenticated, user, userRole} = useSelector((state)=>state.auth) //authReducer에 정의한 값
    
     //babel plugin으로 배포단계에서 console.log 제거할 것
-    console.log(isAuthenticated, "isAuthenicated", user, "user", userRole,"UserRole");
+    //console.log(isAuthenticated, "isAuthenicated", user, "user", userRole,"UserRole");
     //로그아웃
     const dispatch = useDispatch()
     
@@ -90,7 +90,7 @@ const AppNavbar = () => {
         <Fragment>
             <Navbar id="navbar" expand="lg" className="sticky-top">
                 <Container>
-                    <Link to="/" className ="text-white text-decoration-none">
+                    <Link to="#" className ="text-white text-decoration-none">
                         Side Project's Blog(Honeion Blog)
                     </Link>
                     <NavbarToggler onClick={handleToggle}/>

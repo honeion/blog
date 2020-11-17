@@ -58,8 +58,8 @@ const RegisterModal = () => {
     //재사용이 가능하기때문(처음 입문시에는 까먹기 쉬워서 묶어서 하고 있음)
     //NavLink가 따로 가는 곳은 없어서 #으로 충분
     return (
-        <div>
-            <NavLink onClick={handleToggle} to="#">
+        <div className="mt-2">
+            <NavLink onClick={handleToggle} to="#" className ="text-white text-decoration-none">
                 Sign Up
             </NavLink>
             <Modal isOpen={modal} toggle={handleToggle}>

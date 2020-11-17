@@ -50,8 +50,8 @@ const LoginModal = () => {
     //form에서 name이 target.name과 동일, 위의 변수랑도 동일
     //style={{marginTop:"2rem"}} = className="mt-2"
     return (
-        <div>
-            <NavLink onClick={handleToggle} href="#">
+        <div >
+            <NavLink onClick={handleToggle} href="#" className ="text-white text-decoration-none">
                 Login
             </NavLink>
             <Modal isOpen={modal} toggle={handleToggle}>
