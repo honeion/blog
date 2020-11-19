@@ -11,7 +11,7 @@ const AppNavbar = () => {
     const { isAuthenticated, user, userRole } = useSelector((state) => state.auth) //authReducer에 정의한 값
 
     //babel plugin으로 배포단계에서 console.log 제거할 것
-    console.log(isAuthenticated, "isAuthenicated", user, "user", userRole, "UserRole");
+    //console.log(isAuthenticated, "isAuthenicated", user, "user", userRole, "UserRole");
     //로그아웃
     const dispatch = useDispatch()
 
@@ -44,7 +44,7 @@ const AppNavbar = () => {
             <NavItem>
                 {userRole === "Developer" ? (
                     <Form className="col mt-2">
-                        <Link to="/post" className="btn btn-success block text-white px-3" onClick={addPostClick}>
+                        <Link to="/posts" className="btn btn-success block text-white px-3" onClick={addPostClick}>
                             Add Post
                         </Link>
                     </Form>
