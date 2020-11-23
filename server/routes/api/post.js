@@ -27,7 +27,7 @@ const uploadS3 = multer({
             cb(null, basename + new Date().valueOf() + ext) //callback
         }
     }), limits: { fileSize: 100 * 1024 * 1024 }, //100mb
-})
+});
 // region: "ap-northeast-2",
 
 // @route   POST api/post/image
@@ -35,8 +35,7 @@ const uploadS3 = multer({
 // @access  Private
 router.post("/image", uploadS3.array("upload", 5), async (req, res, next) => { //next : 에러가 나면 다음으로 넘김
     try {
-        console.log(req.files.map((v) => v.loaction))
-        res.json({ uploaded: true, url: req.files.map((v) => v.loaction) })
+        res.json({ uploaded: true, url: req.files.map((v) => v.location) });
     } catch (e) {
         console.error(e)
         res.json({ uploaded: false, url: null })

@@ -173,7 +173,7 @@ export const editorConfiguration = {
     },
     language: "ko",
     simpleUpload: {
-        uploadUrl: `${process.env.REACT_APP_BASIC_SERVER_URL}/api/posts/image`,
+        uploadUrl: `${process.env.REACT_APP_BASIC_SERVER_URL}/api/post/image`,
         // drag and drop 가능하도록 aws s3 저장소에 할거면 
         // 그림파일을 넣자마자 aws s3에 저장된 뒤, 저장된 주소를 반환받아 게시물 작성중에 보이도록 함
         // Headers sent along with the XMLHttpRequest to the upload server.
