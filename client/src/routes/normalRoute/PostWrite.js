@@ -6,6 +6,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-editor-classic/src/classiceditor'
 import { editorConfiguration } from '../../components/editor/EditorConfig'
 import MyCustomUploadAdapterPlugin from '../../components/editor/UploadAdapter'
 import dotenv from "dotenv";
+import { POST_UPLOADING_REQUEST } from "../../redux/types";
 dotenv.config();
 
 const PostWrite = () => {
@@ -20,8 +21,14 @@ const PostWrite = () => {
     }
     const onSubmit = async (event) => {
         await event.preventDefault() //새로고침 시
-        const { title, category, contents, fileUrl } = form
-    }
+        const { title, category, contents, fileUrl } = form;
+        const token = localStorage.getItem("token");
+        const body = {title, category, contents, fileUrl, token};
+        dispatch({
+            type : POST_UPLOADING_REQUEST,
+            payload : body,
+        });
+    };
     // The editor event callbacks (onChange, onBlur, onFocus) receive two arguments:
     //  An EventInfo object.
     //  An Editor instance.
@@ -77,7 +84,7 @@ const PostWrite = () => {
     return (
         <div>
             {isAuthenticated ? (
-                <Form>
+                <Form onSubmit={onSubmit}>
                     <FormGroup className="mb-3">
                         <Label for="title">Title</Label>
                         <Input type="text" 
