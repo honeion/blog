@@ -123,8 +123,13 @@ router.post('/', auth, uiploadS3.none(), async (req, res) => {
 router.get("/:id", async(req, res, next)=>{
     try{
         //objectid로 연결된 것들로 넘어가서 만들어줄 것
-        const post = await (await Post.findById(req.params.id)).populate("creator", "name").populate({path: "category" , select : "categoryName"})
-
+        const post = await Post.findById(req.params.id)
+                .populate("creator", "name")
+                .populate({path: "category" , select : "categoryName"});
+        post.views +=1;
+        post.save();
+        console.log(post);
+        res.json(post);
     }catch(e){
         console.error(e);
         next(e)
