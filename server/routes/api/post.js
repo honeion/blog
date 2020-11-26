@@ -58,7 +58,7 @@ router.get('/', async (req, res) => {
 // @access  Private
 // express는 middleware가 차례대로 수행됨
 // 이미지는 이미 올라가있으므로 
-router.post('/', auth, uiploadS3.none(), async (req, res) => {
+router.post('/', auth, uploadS3.none(), async (req, res) => {
     try {
         console.log(req, "req");
         const { title, contents, fileUrl, creator, category } = req.body;
