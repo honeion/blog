@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { push } from 'connected-react-router'
 import { all, call, put, takeEvery, fork } from 'redux-saga/effects'
 import { CLEAR_ERROR_FAILURE, CLEAR_ERROR_REQUEST, CLEAR_ERROR_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS, USER_LOADING_FAILURE, USER_LOADING_REQUEST, USER_LOADING_SUCCESS } from '../types'
 
@@ -45,6 +46,7 @@ function* logout(rq_action) {
         yield put({
             type: LOGOUT_SUCCESS,
         })
+        yield put(push("/"));
     } catch (e) {
         yield put({
             type: LOGOUT_FAILURE,

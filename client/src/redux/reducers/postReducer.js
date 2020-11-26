@@ -1,4 +1,4 @@
-import { POST_LOADING_FAILURE, POST_LOADING_REQUEST, POST_LOADING_SUCCESS } from "../types";
+import { POST_DETAIL_LOADING_FAILURE, POST_DETAIL_LOADING_REQUEST, POST_DETAIL_LOADING_SUCCESS, POST_LOADING_FAILURE, POST_LOADING_REQUEST, POST_LOADING_SUCCESS, POST_UPLOADING_FAILURE, POST_UPLOADING_REQUEST, POST_UPLOADING_SUCCESS } from "../types";
 
 const initialState = {
     isAuthenticated: null, //인증이 된 사람만 글을 써야함
@@ -35,6 +35,44 @@ const postReducer = (state = initialState, action) => {
                 ...state,
                 loading: false,
             }
+        case POST_UPLOADING_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            };
+        case POST_UPLOADING_SUCCESS:
+            return {
+                ...state,
+                posts : action.payload,
+                isAuthenticated : true,
+                loading: false,
+            };
+        case POST_UPLOADING_FAILURE:
+            return {
+                ...state,
+                error: action.payload,
+                loading: false,
+            };
+        case POST_DETAIL_LOADING_REQUEST:
+            return {
+                ...state,
+                posts: [],
+                loading: true,
+            };
+        case POST_DETAIL_LOADING_SUCCESS:
+            return {
+                ...state,
+                postDetail: action.payload,
+                creatorId: action.payload._id,
+                title: action.payload.title,
+                loading: false,
+            };
+        case POST_DETAIL_LOADING_FAILURE:
+            return {
+                ...state,
+                error: action.payload,
+                loading: false,
+            };
         default:
             return state
     };

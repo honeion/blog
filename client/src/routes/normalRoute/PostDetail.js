@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {} from 'react-helmet' // 상단 이름 바꿔줌
-import { POST_DETAIL_UPLOADING_REQUEST , POST_DELETE_REQUEST, USER_LOADING_REQUEST } from '../../redux/types'
+import { POST_DETAIL_LOADING_REQUEST , POST_DELETE_REQUEST, USER_LOADING_REQUEST } from '../../redux/types'
 import { Button, Col, Row } from 'reactstrap'
 import {} from '@ckeditor/ckeditor5-react'
 import { Link } from 'react-router-dom'
@@ -12,16 +12,16 @@ const PostDetail = (req) => {
     console.log(req)
     useEffect(()=>{
         dispatch({
-            type: POST_DETAIL_UPLOADING_REQUEST,
-            payload : req.match.params.id
-        })
+            type: POST_DETAIL_LOADING_REQUEST,
+            payload : req.match.params.id,
+        });
         //글쓴 user만 지울 수 있도록 유저정보도 가져옴
         //localStorage는 f12 application에 storage에 있음
         dispatch({
             type : USER_LOADING_REQUEST,
-            payload : localStorage.getItem("token")
-        })
-    })
+            payload : localStorage.getItem("token"),
+        });
+    }, []); //의존성 빈배열을 넣지 않으면 무한 반복
     //type을 dispatch로 날리면 saga에서 server측에 요청을 하고
     //react 작성할 때 container, presenter 나눠서 하는 방이 있는데
     //이런 위의 정보들은 container로 아래 return 하는 내용은 presenter로 나눌 수 있음
@@ -73,7 +73,8 @@ const PostDetail = (req) => {
             </Row>
         </Fragment>
     )
-    
+
+    console.log(title);
     return <h1>PostDetail</h1>;
 }
 

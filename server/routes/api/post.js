@@ -59,6 +59,7 @@ router.get('/', async (req, res) => {
 // express는 middleware가 차례대로 수행됨
 // 이미지는 이미 올라가있으므로 
 router.post('/', auth, uploadS3.none(), async (req, res) => {
+    console.log(auth,"auth")
     try {
         console.log(req, "req");
         const { title, contents, fileUrl, creator, category } = req.body;
@@ -67,8 +68,8 @@ router.post('/', auth, uploadS3.none(), async (req, res) => {
             title: title,
             contents, 
             fileUrl, 
-            creator, // 똑같으면 생략도 가능
-            data : moment().format("YYYY-MM-DD hh:mm:ss")
+            creator : req.user.id, // 똑같으면 생략도 가능
+            date : moment().format("YYYY-MM-DD hh:mm:ss")
         }); //async await 안쓰고 .exec() 붙여서 실행해도 가능
 
         const findResult = await Category.findOne({
@@ -116,7 +117,7 @@ router.post('/', auth, uploadS3.none(), async (req, res) => {
     }
 })
 
-// @route   POST api/post/:id
+// @route   GET api/post/:id
 // @desc    Detail Post
 // @access  Public
 

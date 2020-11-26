@@ -24,6 +24,7 @@ const PostWrite = () => {
         const { title, category, contents, fileUrl } = form;
         const token = localStorage.getItem("token");
         const body = {title, category, contents, fileUrl, token};
+        console.log("작성내용 ",body);
         dispatch({
             type : POST_UPLOADING_REQUEST,
             payload : body,
