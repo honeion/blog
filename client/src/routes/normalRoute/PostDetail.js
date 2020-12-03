@@ -95,7 +95,7 @@ const PostDetail = (req) => {
                                         {postDetail.category.categoryName}
                                     </Button>
                                 </span>
-                                <span id="title-size">{postDetail.title}</span>
+                                <span>{postDetail.title}</span>
                             </div>
                             <div className="align-self-end">
                             {postDetail.creator.name}
