@@ -63,7 +63,7 @@ const postReducer = (state = initialState, action) => {
             return {
                 ...state,
                 postDetail: action.payload,
-                creatorId: action.payload._id,
+                creatorId: action.payload.creator._id,
                 title: action.payload.title,
                 loading: false,
             };

@@ -55,7 +55,7 @@ function* uploadPosts(action) {
             payload: result.data,
         });
         //front에 작성된 글로 넘어가도록 함
-        yield put(push(`/post/${result.data._id}`))
+        yield put(push(`/posts/${result.data._id}`))
 
     } catch (e) {
         console.log(action);
