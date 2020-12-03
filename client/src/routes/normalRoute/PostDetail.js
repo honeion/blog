@@ -3,9 +3,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Helmet } from 'react-helmet' // 상단 이름 바꿔줌
 import { POST_DETAIL_LOADING_REQUEST , POST_DELETE_REQUEST, USER_LOADING_REQUEST } from '../../redux/types'
 import { Button, Col, Row } from 'reactstrap'
-import {} from '@ckeditor/ckeditor5-react'
+import { CKEditor } from '@ckeditor/ckeditor5-react'
 import { Link } from 'react-router-dom'
 import { GrowingSpinner } from '../../components/spinner/Spinner'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPencilAlt, faCommentDots, faMouse} from '@fortawesome/free-solid-svg-icons'
+import BallonEditor from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor'
+import { editorConfiguration } from '../../components/editor/EditorConfig'
+
+
 const PostDetail = (req) => {
     const dispatch = useDispatch()
     const { postDetail, creatorId, title, loading } = useSelector((state)=>state.post) //reducer
@@ -78,7 +84,7 @@ const PostDetail = (req) => {
     const Body = (
         <>
         {userId === creatorId ? EditButton : HomeButton}
-        <Row className="border-bottom border-top border-primary p-2 mb-3 justify-content-between">
+        <Row className="border-bottom border-top border-primary p-2 mb-3 d-flex justify-content-between">
             {(()=>{
                 if(postDetail && postDetail.creator){
                     return(
@@ -99,8 +105,35 @@ const PostDetail = (req) => {
                 }
             })()}
         </Row>
+        {postDetail && postDetail.comments ? (
+            <Fragment>
+                <div className= "d-flex justify-content-end align-items-baseline small">
+                    <FontAwesomeIcon icon={faPencilAlt}/>
+                    &nbsp;
+                    <span> {postDetail.date} </span>
+                    &nbsp; &nbsp;
+                    <FontAwesomeIcon icon={faCommentDots}/>
+                    &nbsp;
+                    <span>{postDetail.comments.length}</span>
+                    &nbsp; &nbsp;
+                    <FontAwesomeIcon icon={faMouse}/>
+                    <span>{postDetail.views}</span>
+                </div>
+                <Row className = "mb-3">
+                    <CKEditor
+                        editor={BallonEditor}
+                        data={postDetail.contents}
+                        config={editorConfiguration}
+                        disabled="true"
+                    />
+                </Row>
+            </Fragment>
+        ): <div></div>}
         </>
-    ) //function()처럼 실행한다는 의미로 (()=>{})() 익명함수 뒤에 ()추가 해줘야함
+    ) 
+    //function()처럼 실행한다는 의미로 (()=>{})() 익명함수 뒤에 ()추가 해줘야함
+    //ClassicEditor를 볼 때도 에디터 사용해서 보지않으면 글씨가 작성했던것과 달라서
+    // BallonEditor는 테두리 없는 깔끔한 에디터를 사용
     return (
         <div>
             <Helmet title={`Post | ${title}`}/>
