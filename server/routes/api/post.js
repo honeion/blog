@@ -190,6 +190,32 @@ router.post("/:id/comments", async(req, res, next)=>{
     }
 })
 
+// @route   Delete api/post/:id
+// @desc    Delete a Post
+// @access  Private
+router.delete("/:id", auth, async(req, res)=>{
+    await Post.deleteMany({_id:req.params.id})
+    await Comment.deleteMany({post:req.params.id})
+    await User.findByIdAndUpdate(req.user.id, {
+        $pull : { //배열에서 값빼줄때 pull 사용 mongooseArray
+            posts : req.params.id,
+            comments : { post_id:req.params.id } 
+        },
+    });
+    const CategoryUpdateResult = await Category.findOneAndUpdate(
+        {posts: req.params.id},
+        {$pull: {posts:req.params.id}},
+        {new : true}
+    )
+
+    if(CategoryUpdateResult.length === 0 ){
+        await Category.deleteMany({_id : CategoryUpdateResult})
+    } //배열이 하나도 없으면 카테고리를 지워줌
+
+    return res.json({success:true})
+});
+
+
 //한 개만 내보낼 수 있음. 괄호 없이 불러올 수 있음
 export default router
 //export const name = () => {} 이름을 정해서 모듈 내보낼 수 있음(import 시 이름 고정), 괄호안에 적어줘야함

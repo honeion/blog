@@ -37,6 +37,7 @@ const PostDetail = (req) => {
 
 
     //creator만 지울 수 있어야함
+    //delete 같은경우는 reducer말고 saga만 필요(딱히 상태변화가 없기때문)
     const onDeleteClick = () => {
         dispatch({
             type: POST_DELETE_REQUEST,
