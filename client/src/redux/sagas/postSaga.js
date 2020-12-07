@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects'
 import { push } from 'connected-react-router'
-import { POST_DELETE_FAILURE, POST_DELETE_REQUEST, POST_DELETE_SUCCESS, POST_DETAIL_LOADING_FAILURE, POST_DETAIL_LOADING_REQUEST, POST_DETAIL_LOADING_SUCCESS, POST_LOADING_FAILURE, POST_LOADING_REQUEST, POST_LOADING_SUCCESS, POST_UPLOADING_FAILURE, POST_UPLOADING_REQUEST, POST_UPLOADING_SUCCESS } from '../types'
+import { POST_DELETE_FAILURE, POST_DELETE_REQUEST, POST_DELETE_SUCCESS, POST_DETAIL_LOADING_FAILURE, POST_DETAIL_LOADING_REQUEST, POST_DETAIL_LOADING_SUCCESS, POST_EDIT_LOADING_FAILURE, POST_EDIT_LOADING_REQUEST, POST_EDIT_LOADING_SUCCESS, POST_EDIT_UPLOADING_FAILURE, POST_EDIT_UPLOADING_REQUEST, POST_EDIT_UPLOADING_SUCCESS, POST_LOADING_FAILURE, POST_LOADING_REQUEST, POST_LOADING_SUCCESS, POST_UPLOADING_FAILURE, POST_UPLOADING_REQUEST, POST_UPLOADING_SUCCESS } from '../types'
 
 // All Posts load
 
@@ -131,11 +131,81 @@ function* watchDeletePost() {
     yield takeEvery(POST_DELETE_REQUEST, deletePosts)
 }
 
+// Post Edit Load 
+const loadEditPostAPI = (payload) => {
+    const config = {
+        headers: {
+            "Content-Type" : "application/json"
+        }
+    }
+    const token = payload.token
+    if(token){
+        config.headers["x-auth-token"] = token
+    }
+    return axios.get(`/api/post/${payload.id}/edit`,config);
+}
+
+function* loadEditPosts(action) { 
+    try {
+        const result = yield call(loadEditPostAPI, action.payload) 
+        yield put({
+            type: POST_EDIT_LOADING_SUCCESS,
+            payload: result.data,
+        });
+    } catch (e) {
+        yield put({
+            type: POST_EDIT_LOADING_FAILURE,
+            payload: e,
+        }) 
+        yield put(push("/"));
+    }
+}
+function* watchLoadEditPost() {
+    yield takeEvery(POST_EDIT_LOADING_REQUEST, loadEditPosts)
+}
+
+// Post Edit UpLoad 
+const uploadEditPostAPI = (payload) => {
+    const config = {
+        headers: {
+            "Content-Type" : "application/json"
+        }
+    }
+    const token = payload.token
+    if(token){
+        config.headers["x-auth-token"] = token
+    }
+    //config 앞에 payload가 있어야 const token = payload.token 가능
+    return axios.post(`/api/post/${payload.id}/edit`, payload, config);
+}
+
+function* uploadEditPosts(action) { 
+    try {
+        const result = yield call(uploadEditPostAPI, action.payload) 
+        yield put({
+            type: POST_EDIT_UPLOADING_SUCCESS,
+            payload: result.data,
+        });
+        yield put(push(`/posts/${result.data._id}`));
+    } catch (e) {
+        yield put({
+            type: POST_EDIT_UPLOADING_FAILURE,
+            payload: e,
+        }) 
+    }
+    
+}
+function* watchUploadEditPost() {
+    yield takeEvery(POST_EDIT_UPLOADING_REQUEST, uploadEditPosts)
+}
+
 export default function* postSaga() {
     yield all([
         fork(watchLoadPost),
         fork(watchUploadPost),
         fork(watchloadPostDetail),
         fork(watchDeletePost),
+        fork(watchLoadEditPost),
+        fork(watchUploadEditPost),
     ]);
 }

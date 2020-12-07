@@ -57,7 +57,7 @@ const PostDetail = (req) => {
                     </Link>
                 </Col>
                 <Col className ="col-md-3 mr-md-3">
-                    <Link to={`/post/${req.match.params.id}/edit`} className="btn btn-success btn-block">
+                    <Link to={`/posts/${req.match.params.id}/edit`} className="btn btn-success btn-block">
                         Edit Post
                     </Link>
                 </Col>

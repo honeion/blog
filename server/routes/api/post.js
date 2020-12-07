@@ -218,7 +218,7 @@ router.delete("/:id", auth, async(req, res)=>{
 // @route   GET api/post/:id/edit
 // @desc    Edit Post
 // @access  Private
-router.get("/:id/edit", async(req, res, next)=> {
+router.get("/:id/edit", auth, async(req, res, next)=> {
     try {
         //populate가 서류에 데이터를 덧붙이다는 의미가 있네
         const post = await Post.findById(req.params.id).populate("creator", "name")       
@@ -227,8 +227,8 @@ router.get("/:id/edit", async(req, res, next)=> {
         console.error(error)
     }
 })
-
-router.post("/:id/edit", async(req, res, next)=> {
+//미들웨어를 만들어놨기때문에 auth만 적어주면되고 front에서 토큰을 넘겨주는 작업이 필요한 것
+router.post("/:id/edit", auth, async(req, res, next)=> {
     console.log(req,"api/post/:id/edit")
     //req의 body안의 것을 뽑아내고
     const {body: {title, contents, fileUrl, id}} = req
