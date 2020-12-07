@@ -5,6 +5,7 @@ import auth from '../../middleware/auth';
 import Post from '../../models/post'
 import Category from '../../models/category'
 import User from '../../models/user'
+import Comment from '../../models/comments'
 
 const router = express.Router()
 
@@ -146,7 +147,7 @@ router.get("/:id", async(req, res, next)=>{
 router.get('/:id/comments', async(req, res)=>{
     try {
         const comment = await Post.findById(req.params.id).populate({
-            path: "comment", //경로가 model에서 참조하는 ref임
+            path: "comments", //경로가 model에서 참조하는 ref라고 했었는데 아니고 변수명이 맞는듯 Post에서 comments를 타고 들어가야하는듯
         });
         const result = comment.comments;
         console.log(result,"comment load")
@@ -159,6 +160,7 @@ router.get('/:id/comments', async(req, res)=>{
 
 // @route Post api/post
 router.post("/:id/comments", async(req, res, next)=>{
+    console.log(req,"comments")
     const newComment = await Comment.create({
         contents: req.body.contents,
         creator : req.body.userId,

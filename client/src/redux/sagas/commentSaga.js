@@ -38,11 +38,12 @@ function* watchLoadComments(){
 const uploadCommentsAPI = (payload) => {
     console.log(payload.id, "uploadCommentsAPI ID")
     //upload시에는 넘겨오는 데이터가 댓글관련된 폼 내용이니 id만 추출
-    return axios.post(`/api/post/${payload.id}/comments`)
+    return axios.post(`/api/post/${payload.id}/comments`, payload) //uploadComments에서 주는 action.payload 받음
 }
 
 function* uploadComments(action){
     try {
+        console.log("야")
         const result = yield call(uploadCommentsAPI, action.payload)
         console.log(result, "Upload Comment")
         yield put({
@@ -50,6 +51,8 @@ function* uploadComments(action){
             payload : result.data,
         })
     } catch (error) {
+        console.log("action : ",action)
+        console.log(action.payload)
         console.log(error)
         yield put({
             type: COMMENT_UPLOADING_FAILURE,

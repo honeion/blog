@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Helmet } from 'react-helmet' // 상단 이름 바꿔줌
 import { POST_DETAIL_LOADING_REQUEST , POST_DELETE_REQUEST, USER_LOADING_REQUEST } from '../../redux/types'
-import { Button, Col, Row } from 'reactstrap'
+import { Button, Col, Container, Row } from 'reactstrap'
 import { CKEditor } from '@ckeditor/ckeditor5-react'
 import { Link } from 'react-router-dom'
 import { GrowingSpinner } from '../../components/spinner/Spinner'
@@ -10,12 +10,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPencilAlt, faCommentDots, faMouse} from '@fortawesome/free-solid-svg-icons'
 import BallonEditor from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor'
 import { editorConfiguration } from '../../components/editor/EditorConfig'
+import Comments from '../../components/comments/Comments'
 
 
 const PostDetail = (req) => {
     const dispatch = useDispatch()
     const { postDetail, creatorId, title, loading } = useSelector((state)=>state.post) //reducer
     const { userId, userName } = useSelector((state)=>state.auth)
+    const { comments } = useSelector((state)=>state.comment)
     console.log(req)
     useEffect(()=>{
         dispatch({
@@ -127,10 +129,48 @@ const PostDetail = (req) => {
                         disabled="true"
                     />
                 </Row>
+                <Row>
+                    <Container className="mb-3 border border-blue rounded">
+                        {
+                            Array.isArray(comments) ? comments.map(
+                                ({contents, creator, date, _id, creatorName})=> (
+                                    <div key={_id}>
+                                        <Row className ="justify-content-between p-2">
+                                            <div className="font-weight-bold">
+                                                {creatorName ? creatorName : creator}
+                                            </div>
+                                            <div className="text-small">
+                                                <span className="font-weight-bold">
+                                                    {date.split(" ")[0]}
+                                                </span>
+                                                <span className="font-weight-light">
+                                                    {" "}
+                                                    {date.split(" ")[1]}
+                                                </span>
+                                            </div>
+                                        </Row>
+                                        <Row className="p-2">
+                                            <div>
+                                                {contents}
+                                            </div>
+                                        </Row>
+                                        <hr/>
+                                    </div>
+                                    )
+                                ) 
+                            : "Creator"
+                        }
+                        <Comments 
+                            id={req.match.params.id}
+                            userId={userId}
+                            userName={userName}
+                        />
+                    </Container>
+                </Row>
             </Fragment>
         ): <div></div>}
         </>
-    ) 
+    ) //Comments는 너무 길어져서 모듈로 뺌. 많이 빼야 리렌더링을 비교적 줄일수 있음. userId는 auth에서 가져오고 있음
     //function()처럼 실행한다는 의미로 (()=>{})() 익명함수 뒤에 ()추가 해줘야함
     //ClassicEditor를 볼 때도 에디터 사용해서 보지않으면 글씨가 작성했던것과 달라서
     // BallonEditor는 테두리 없는 깔끔한 에디터를 사용
