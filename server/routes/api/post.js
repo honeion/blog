@@ -215,6 +215,42 @@ router.delete("/:id", auth, async(req, res)=>{
     return res.json({success:true})
 });
 
+// @route   GET api/post/:id/edit
+// @desc    Edit Post
+// @access  Private
+router.get("/:id/edit", async(req, res, next)=> {
+    try {
+        //populate가 서류에 데이터를 덧붙이다는 의미가 있네
+        const post = await Post.findById(req.params.id).populate("creator", "name")       
+        res.json(post)
+    } catch (error) {
+        console.error(error)
+    }
+})
+
+router.post("/:id/edit", async(req, res, next)=> {
+    console.log(req,"api/post/:id/edit")
+    //req의 body안의 것을 뽑아내고
+    const {body: {title, contents, fileUrl, id}} = req
+    
+    try {
+        const modified_post = await Post.findByIdAndUpdate(
+            id, {
+                title, 
+                contents, 
+                fileUrl, 
+                date:moment().format("YYYY-MM-DD hh:mm:ss") //수정날짜
+            },
+            { new : true } //new를 true로 해야 update가 적용됨
+        )    
+        console.log(modified_post, "edit modified")
+        res.redirect(`/api/post/${modified_post.id}`)
+    } catch (error) {
+        console.error(error)        
+        next(error)
+    }
+})
+
 
 //한 개만 내보낼 수 있음. 괄호 없이 불러올 수 있음
 export default router
