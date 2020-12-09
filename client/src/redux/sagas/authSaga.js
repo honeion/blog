@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { push } from 'connected-react-router'
 import { all, call, put, takeEvery, fork } from 'redux-saga/effects'
-import { CLEAR_ERROR_FAILURE, CLEAR_ERROR_REQUEST, CLEAR_ERROR_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS, USER_LOADING_FAILURE, USER_LOADING_REQUEST, USER_LOADING_SUCCESS } from '../types'
+import { CLEAR_ERROR_FAILURE, CLEAR_ERROR_REQUEST, CLEAR_ERROR_SUCCESS, LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS, PASSWORD_EDIT_UPLOADING_FAILURE, PASSWORD_EDIT_UPLOADING_REQUEST, PASSWORD_EDIT_UPLOADING_SUCCESS, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS, USER_LOADING_FAILURE, USER_LOADING_REQUEST, USER_LOADING_SUCCESS } from '../types'
 
 // Login
 
@@ -145,12 +145,47 @@ function* watchClearError() {
     yield takeEvery(CLEAR_ERROR_REQUEST, clearError)
 }
 
+// Edit Password
+const editPasswordAPI= (payload) => {
+    const config = {
+        headers : {
+            "Content-Type" : "application/json"
+        }
+    }
+    const token = payload.token;
+    if(token) {
+        config.headers["x-auth-token"] = token
+    }
+    return axios.post(`/api/user/${payload.userName}/profile`, payload, config)
+}
+
+function* editPassword(rq_action) {
+    try {
+        console.log(rq_action, " editPassword");
+        const result = yield call(editPasswordAPI, rq_action.payload)
+        yield put({ 
+            type : PASSWORD_EDIT_UPLOADING_SUCCESS,
+            payload : result.data //여기서 .data할거면 reducer에서 payload.에서 바로 접근
+        })
+    } catch(e) {
+        yield put({
+            type : PASSWORD_EDIT_UPLOADING_FAILURE,
+            payload : e.response
+        })
+    }
+}
+ 
+function* watchEditPassword() {
+    yield takeEvery(PASSWORD_EDIT_UPLOADING_REQUEST, editPassword)
+}
+
 export default function* authSaga() {
     yield all([
         fork(watchLoginUser),
         fork(watchLogout),
         fork(watchUserLoading),
         fork(watchRegisterUser),
-        fork(watchClearError)
+        fork(watchClearError),
+        fork(watchEditPassword)
     ])
 }

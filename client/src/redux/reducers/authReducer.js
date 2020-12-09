@@ -1,4 +1,4 @@
-import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, CLEAR_ERROR_REQUEST, CLEAR_ERROR_SUCCESS, CLEAR_ERROR_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE, USER_LOADING_REQUEST, USER_LOADING_SUCCESS, USER_LOADING_FAILURE, REGISTER_FAILURE, REGISTER_SUCCESS, REGISTER_REQUEST } from '../types'
+import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, CLEAR_ERROR_REQUEST, CLEAR_ERROR_SUCCESS, CLEAR_ERROR_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS, LOGOUT_FAILURE, USER_LOADING_REQUEST, USER_LOADING_SUCCESS, USER_LOADING_FAILURE, REGISTER_FAILURE, REGISTER_SUCCESS, REGISTER_REQUEST, PASSWORD_EDIT_UPLOADING_SUCCESS, PASSWORD_EDIT_UPLOADING_FAILURE, PASSWORD_EDIT_UPLOADING_REQUEST } from '../types'
 //초기값 - store에 있는 것과 동일하게 선언해야함
 const initialState = {
     token: localStorage.getItem('token'),
@@ -9,7 +9,8 @@ const initialState = {
     userName: "",
     userRole: "",
     errorMsg: "",
-    successMsg: ""
+    successMsg: "",
+    previousMatchMsg : "" //이전 것과 맞는지
 }
 
 const authReducer = (state = initialState, action) => {
@@ -61,21 +62,7 @@ const authReducer = (state = initialState, action) => {
                 isLoading: false,
                 errorMsg: action.payload.data.msg
             }
-        case CLEAR_ERROR_REQUEST:
-            return {
-                ...state,
-                errorMsg: ""
-            }
-        case CLEAR_ERROR_SUCCESS:
-            return {
-                ...state,
-                errorMsg: ""
-            }
-        case CLEAR_ERROR_FAILURE:
-            return {
-                ...state,
-                errorMsg: ""
-            }
+        
         case USER_LOADING_REQUEST :
             return {
                 ...state, 
@@ -98,6 +85,44 @@ const authReducer = (state = initialState, action) => {
                 isLoading : false,
                 user : null,
                 userRole : "",
+            }
+        case PASSWORD_EDIT_UPLOADING_REQUEST :
+            return {
+                ...state, 
+                isLoading : true,
+            }
+        case PASSWORD_EDIT_UPLOADING_SUCCESS :
+            return {
+                ...state, 
+                isLoading : false,
+                successMsg : action.payload.success_msg,
+                errorMsg: "",
+                previousMatchMsg : ""
+            }
+        case PASSWORD_EDIT_UPLOADING_FAILURE :
+            return {
+                ...state, 
+                isLoading   : false,
+                successMsg  : "",
+                errorMsg    : action.payload.fail_msg,
+                previousMatchMsg : action.payload.match_msg
+            }
+        // submit 버튼을 눌렀을때 에러를 모두 날려줄 것
+        case CLEAR_ERROR_REQUEST:
+            return {
+                ...state,
+            }
+        case CLEAR_ERROR_SUCCESS: //에러를 모두 날린다.
+            return {
+                ...state,
+                errorMsg: "",
+                previousMatchMsg : "",
+            }
+        case CLEAR_ERROR_FAILURE:
+            return {
+                ...state,
+                errorMsg: "Clear Error Fail(em)",
+                previousMatchMsg: "Clear Error Fail (pmm)",
             }
         default:
             return state

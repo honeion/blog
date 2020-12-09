@@ -12,8 +12,9 @@ import PostWrite from "./normalRoute/PostWrite";
 import PostDetail from "./normalRoute/PostDetail";
 import Search from "./normalRoute/Search";
 import CategoryResult from "./normalRoute/CategoryResult";
-import { EditProtectedRoute } from "./protectedRoute/ProtectedRoute";
+import { EditProtectedRoute, ProfileProtectedRoute } from "./protectedRoute/ProtectedRoute";
 import PostEdit from "./normalRoute/PostEdit";
+import Profile from "./normalRoute/Profile";
 //위에 적은 주소 외 다른 주소는 다 홈으로 <Redirect from ="*" to="/" />
 const MyRouter = () => (
     <Fragment>
@@ -24,10 +25,11 @@ const MyRouter = () => (
                 <Route path="/" exact component={PostCardList} />
                 <Route path="/posts" exact component={PostWrite} />
                 <Route path="/posts/:id" exact component={PostDetail} />
-                <EditProtectedRoute path="/posts/:id/edit" exact component={PostEdit}/>
-                {/* <Route path="/posts/:id/edit" exact component={PostEdit} /> */}
                 <Route path="/posts/category/:categoryName" exact component={CategoryResult} />
                 <Route path="/search/:searchTerm" exact component={Search} />
+                {/* <Route path="/posts/:id/edit" exact component={PostEdit} /> */}
+                <EditProtectedRoute path="/posts/:id/edit" exact component={PostEdit}/>
+                <ProfileProtectedRoute path="/user/:userName/profile" exact component={Profile}/>
                 <Redirect from="*" to="/" />
             </Switch>
         </Container>
