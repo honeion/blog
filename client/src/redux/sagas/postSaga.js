@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects'
 import { push } from 'connected-react-router'
-import { POST_DELETE_FAILURE, POST_DELETE_REQUEST, POST_DELETE_SUCCESS, POST_DETAIL_LOADING_FAILURE, POST_DETAIL_LOADING_REQUEST, POST_DETAIL_LOADING_SUCCESS, POST_EDIT_LOADING_FAILURE, POST_EDIT_LOADING_REQUEST, POST_EDIT_LOADING_SUCCESS, POST_EDIT_UPLOADING_FAILURE, POST_EDIT_UPLOADING_REQUEST, POST_EDIT_UPLOADING_SUCCESS, POST_LOADING_FAILURE, POST_LOADING_REQUEST, POST_LOADING_SUCCESS, POST_UPLOADING_FAILURE, POST_UPLOADING_REQUEST, POST_UPLOADING_SUCCESS } from '../types'
+import { CATEGORY_FIND_FAILURE, CATEGORY_FIND_REQUEST, CATEGORY_FIND_SUCCESS, POST_DELETE_FAILURE, POST_DELETE_REQUEST, POST_DELETE_SUCCESS, POST_DETAIL_LOADING_FAILURE, POST_DETAIL_LOADING_REQUEST, POST_DETAIL_LOADING_SUCCESS, POST_EDIT_LOADING_FAILURE, POST_EDIT_LOADING_REQUEST, POST_EDIT_LOADING_SUCCESS, POST_EDIT_UPLOADING_FAILURE, POST_EDIT_UPLOADING_REQUEST, POST_EDIT_UPLOADING_SUCCESS, POST_LOADING_FAILURE, POST_LOADING_REQUEST, POST_LOADING_SUCCESS, POST_UPLOADING_FAILURE, POST_UPLOADING_REQUEST, POST_UPLOADING_SUCCESS } from '../types'
 
 // All Posts load
 
@@ -199,6 +199,32 @@ function* watchUploadEditPost() {
     yield takeEvery(POST_EDIT_UPLOADING_REQUEST, uploadEditPosts)
 }
 
+// Category Find
+const categoryFindAPI = (payload) => {
+    console.log(payload)
+    //utf-8
+    return axios.get(`/api/post/category/${encodeURIComponent(payload)}`);
+}
+
+function* categoryFind(action) { 
+    try {
+        const result = yield call(categoryFindAPI, action.payload) 
+        yield put({
+            type: CATEGORY_FIND_SUCCESS,
+            payload: result.data,
+        });
+    } catch (error) {
+        yield put({
+            type: CATEGORY_FIND_FAILURE,
+            payload: error,
+        }) 
+    }
+    
+}
+function* watchCategoryFindPost() {
+    yield takeEvery(CATEGORY_FIND_REQUEST, categoryFind)
+}
+
 export default function* postSaga() {
     yield all([
         fork(watchLoadPost),
@@ -207,5 +233,6 @@ export default function* postSaga() {
         fork(watchDeletePost),
         fork(watchLoadEditPost),
         fork(watchUploadEditPost),
+        fork(watchCategoryFindPost),
     ]);
 }

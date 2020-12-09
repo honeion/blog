@@ -1,4 +1,4 @@
-import { POST_DETAIL_LOADING_FAILURE, POST_DETAIL_LOADING_REQUEST, POST_DETAIL_LOADING_SUCCESS, POST_EDIT_LOADING_FAILURE, POST_EDIT_LOADING_REQUEST, POST_EDIT_LOADING_SUCCESS, POST_EDIT_UPLOADING_FAILURE, POST_EDIT_UPLOADING_REQUEST, POST_EDIT_UPLOADING_SUCCESS, POST_LOADING_FAILURE, POST_LOADING_REQUEST, POST_LOADING_SUCCESS, POST_UPLOADING_FAILURE, POST_UPLOADING_REQUEST, POST_UPLOADING_SUCCESS } from "../types";
+import { CATEGORY_FIND_FAILURE, CATEGORY_FIND_REQUEST, CATEGORY_FIND_SUCCESS, POST_DETAIL_LOADING_FAILURE, POST_DETAIL_LOADING_REQUEST, POST_DETAIL_LOADING_SUCCESS, POST_EDIT_LOADING_FAILURE, POST_EDIT_LOADING_REQUEST, POST_EDIT_LOADING_SUCCESS, POST_EDIT_UPLOADING_FAILURE, POST_EDIT_UPLOADING_REQUEST, POST_EDIT_UPLOADING_SUCCESS, POST_LOADING_FAILURE, POST_LOADING_REQUEST, POST_LOADING_SUCCESS, POST_UPLOADING_FAILURE, POST_UPLOADING_REQUEST, POST_UPLOADING_SUCCESS } from "../types";
 
 const initialState = {
     isAuthenticated: null, //인증이 된 사람만 글을 써야함
@@ -113,6 +113,25 @@ const postReducer = (state = initialState, action) => {
             return {
                 ...state,
                 error: action.payload,
+                loading: false,
+            };
+        //CATEGORY FIND
+        case CATEGORY_FIND_REQUEST:
+            return {
+                ...state, 
+                posts: [], //카테고리 찾고 홈으로 넘어가면 홈의 포스트랑 겹쳐서 일단 날려줘야함
+                loading: true,
+            };
+        case CATEGORY_FIND_SUCCESS:
+            return {
+                ...state,
+                categoryFindResult : action.payload,
+                loading: false,
+            };
+        case CATEGORY_FIND_FAILURE:
+            return {
+                ...state,
+                categoryFindResult : action.payload,
                 loading: false,
             };
         default:

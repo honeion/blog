@@ -4,6 +4,8 @@ import { Badge, Button } from 'reactstrap';
 
 const Category = ({posts}) => {
     console.log("posts",posts);
+    // category 넘어가는 saga
+    // server쪽에서 카테고리로 검색되도록 해야함
     return (
         <Fragment>
             {
@@ -12,7 +14,7 @@ const Category = ({posts}) => {
                         return(
                         <div key={_id} className="mx-1 mt-1 my_category">
                             <Link 
-                                to={`/post/category/${categoryName}`} 
+                                to={`/posts/category/${categoryName}`} 
                                 className="text-dark text-decoration-none"
                             >
                                 <span className = "ml-1">

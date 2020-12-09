@@ -253,7 +253,22 @@ router.post("/:id/edit", auth, async(req, res, next)=> {
     }
 })
 
-
+router.get('/category/:categoryName', async(req, res, next)=>{
+    try {
+        const result = await Category.findOne({
+            categoryName :{
+                $regex : req.params.categoryName,
+                $options : "i" //덜 민감하게 upper 같은
+            } //$는 mongodb 기본 메소드를 사용하기 편하도록 해준 것들 mongoose와 mongodb를 섞어 쓰면 안좋지만 mongodb 기본 메소드 docs를 참조해서 쓴 것
+        }, "posts").populate({path:"posts"}) //category 모델에 달려있는 posts를 찾음
+        //console.log(result,"Category Find result");
+        // res.send(result); //send와 json의 차이를 알아둘 것(json도 send를 호출함. 명확함이 주된 차이인듯)
+        res.json(result);
+    } catch (error) {
+        console.error(error)
+        next(error)
+    }
+})
 //한 개만 내보낼 수 있음. 괄호 없이 불러올 수 있음
 export default router
 //export const name = () => {} 이름을 정해서 모듈 내보낼 수 있음(import 시 이름 고정), 괄호안에 적어줘야함
