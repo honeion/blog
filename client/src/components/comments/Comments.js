@@ -21,13 +21,19 @@ const Comments = ({id, userId, userName}) => {
         const body = {
             contents, token, id, userId, userName
         }
-        console.log("###", body," form",form)
-        dispatch({
-            type: COMMENT_UPLOADING_REQUEST,
-            payload : body
-        })
-        resetValue.current.value = ""
-        setValues("");
+        
+        if(token === null || token === undefined){
+            alert('로그인 해야 댓글 작성 가능합니다.')
+        }
+        else{
+            console.log("###", body," form",form)
+            dispatch({
+                type: COMMENT_UPLOADING_REQUEST,
+                payload : body
+            })
+            resetValue.current.value = ""
+            setValues("");
+        }
     }
     //comment를 달고 나서 state를 초기화해주기 위함
     const resetValue = useRef(null);
@@ -47,6 +53,8 @@ const Comments = ({id, userId, userName}) => {
            payload: id,
        });
    },[dispatch, id]) //바뀔때마다 어떤 값을 useEffect 사용할지 의존성값 추가
+
+   console.log("comment 정보 ",id, userId, userName)
     return (
         <Fragment>
             <Form onSubmit={onSubmit}>

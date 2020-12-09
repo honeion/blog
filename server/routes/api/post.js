@@ -50,8 +50,10 @@ router.post("/image", uploadS3.array("upload", 5), async (req, res, next) => { /
 // api/post
 router.get('/', async (req, res) => {
     const postFindResult = await Post.find(); //몽고디비에서 모든 것 가져옴
-    console.log(postFindResult, "ALL Post Get");
-    res.json(postFindResult) //마지막 줄에 응답이 나가야함
+    const categoryFindResult = await Category.find();
+    const result = {postFindResult, categoryFindResult}
+    console.log(result, "ALL Post Get");
+    res.json(result) //마지막 줄에 응답이 나가야함
 })
 
 // @route   POST api/post

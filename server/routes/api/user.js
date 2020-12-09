@@ -9,6 +9,14 @@ import User from '../../models/user'
 
 const router = express.Router()
 
+// 수업에서는 로그인 후 바로 프로필을 수정할 수 없고 새로고침을 한번 해야 프로필 수정하는 화면으로 넘어갑니다. 
+
+// 이것을 수정하기 위해서는 어떻게 해야할까요?
+
+// <Hint1> 로그인 후 프로필 화면으로 바로 넘어가지 않고, 새로고침해야 넘어가야 한다는 것은 어떤 값이 안들어와서 그렇다
+
+// <Hint2> AppNavBar, authReducer를 수정필요
+
 // @routes  GET api/user
 // @desc    Get all user
 // @access  public

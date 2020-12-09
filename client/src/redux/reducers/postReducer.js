@@ -28,7 +28,8 @@ const postReducer = (state = initialState, action) => {
         case POST_LOADING_SUCCESS:
             return {
                 ...state,
-                posts: [...state.posts, ...action.payload], //기존 포스트 있으면 가져오고, 추가값은 뒤에 붙여줌
+                posts: [...state.posts, ...action.payload.postFindResult], //기존 포스트 있으면 가져오고, 추가값은 뒤에 붙여줌
+                categoryFindResult : action.payload.categoryFindResult,
                 loading: false,
             }
         case POST_LOADING_FAILURE:
