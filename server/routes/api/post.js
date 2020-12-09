@@ -252,7 +252,7 @@ router.post("/:id/edit", auth, async(req, res, next)=> {
         next(error)
     }
 })
-
+//Category
 router.get('/category/:categoryName', async(req, res, next)=>{
     try {
         const result = await Category.findOne({

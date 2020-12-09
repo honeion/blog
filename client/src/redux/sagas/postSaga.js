@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects'
 import { push } from 'connected-react-router'
-import { CATEGORY_FIND_FAILURE, CATEGORY_FIND_REQUEST, CATEGORY_FIND_SUCCESS, POST_DELETE_FAILURE, POST_DELETE_REQUEST, POST_DELETE_SUCCESS, POST_DETAIL_LOADING_FAILURE, POST_DETAIL_LOADING_REQUEST, POST_DETAIL_LOADING_SUCCESS, POST_EDIT_LOADING_FAILURE, POST_EDIT_LOADING_REQUEST, POST_EDIT_LOADING_SUCCESS, POST_EDIT_UPLOADING_FAILURE, POST_EDIT_UPLOADING_REQUEST, POST_EDIT_UPLOADING_SUCCESS, POST_LOADING_FAILURE, POST_LOADING_REQUEST, POST_LOADING_SUCCESS, POST_UPLOADING_FAILURE, POST_UPLOADING_REQUEST, POST_UPLOADING_SUCCESS } from '../types'
+import { CATEGORY_FIND_FAILURE, CATEGORY_FIND_REQUEST, CATEGORY_FIND_SUCCESS, POST_DELETE_FAILURE, POST_DELETE_REQUEST, POST_DELETE_SUCCESS, POST_DETAIL_LOADING_FAILURE, POST_DETAIL_LOADING_REQUEST, POST_DETAIL_LOADING_SUCCESS, POST_EDIT_LOADING_FAILURE, POST_EDIT_LOADING_REQUEST, POST_EDIT_LOADING_SUCCESS, POST_EDIT_UPLOADING_FAILURE, POST_EDIT_UPLOADING_REQUEST, POST_EDIT_UPLOADING_SUCCESS, POST_LOADING_FAILURE, POST_LOADING_REQUEST, POST_LOADING_SUCCESS, POST_UPLOADING_FAILURE, POST_UPLOADING_REQUEST, POST_UPLOADING_SUCCESS, SEARCH_FAILURE, SEARCH_REQUEST, SEARCH_SUCCESS } from '../types'
 
 // All Posts load
 
@@ -225,6 +225,35 @@ function* watchCategoryFindPost() {
     yield takeEvery(CATEGORY_FIND_REQUEST, categoryFind)
 }
 
+// Search
+const searchResultAPI = (payload) => {
+    console.log(payload)
+    //utf-8
+    return axios.get(`/api/search/${encodeURIComponent(payload)}`);
+}
+
+function* searchResult(action) { 
+    try {
+        const result = yield call(searchResultAPI, action.payload) 
+        yield put({
+            type: SEARCH_SUCCESS,
+            payload: result.data,
+        });
+        //바로 넘어가도록
+        yield put(push(`/search/${encodeURIComponent(action.payload)}`))
+    } catch (error) {
+        yield put({
+            type: SEARCH_FAILURE,
+            payload: error,
+        }) 
+        yield put(push('/'));
+    }
+    
+}
+function* watchSearchResult() {
+    yield takeEvery(SEARCH_REQUEST, searchResult)
+}
+
 export default function* postSaga() {
     yield all([
         fork(watchLoadPost),
@@ -234,5 +263,6 @@ export default function* postSaga() {
         fork(watchLoadEditPost),
         fork(watchUploadEditPost),
         fork(watchCategoryFindPost),
+        fork(watchSearchResult)
     ]);
 }

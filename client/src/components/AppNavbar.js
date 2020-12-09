@@ -5,6 +5,7 @@ import LoginModal from "../components/auth/LoginModal"
 import { useDispatch, useSelector } from "react-redux"
 import { LOGOUT_REQUEST } from "../redux/types"
 import RegisterModal from "./auth/RegisterModal"
+import SearchInput from "./search/SearchInput"
 const AppNavbar = () => {
     //인증되었을때 변화
     const [isOpen, setIsOpen] = useState(false);//처음엔 닫아진 상태
@@ -95,6 +96,7 @@ const AppNavbar = () => {
                     </Link>
                     <NavbarToggler onClick={handleToggle} />
                     <Collapse isOpen={isOpen} navbar>
+                        <SearchInput isOpen={isOpen}/>
                         <Nav className="ml-auto d-flex justify-content-around" navbar>
                             {isAuthenticated ? authLink : guestLink}
                         </Nav>
