@@ -1,6 +1,6 @@
 //검색 창
 import React, { Fragment, useRef, useState } from 'react'
-import { Form, FormGroup, Input } from 'reactstrap'
+import { Form, Input } from 'reactstrap'
 import { useDispatch } from 'react-redux'
 import { SEARCH_REQUEST } from '../../redux/types'
 

@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useEffect, useRef, useState } from 'react'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { POST_LOADING_REQUEST } from '../../redux/types';
 import { Helmet } from 'react-helmet'
@@ -100,7 +100,9 @@ const PostCardList = () => {
     //         console.log(node, "node")
     //         observer.current.observe(node);
     //     }
-    // })
+    // },
+    // [dispatch,loading]
+    // )
     //Infinity Method : intersactionObserver - chrome, safari, firefox 같은 브라우저에서 가능 (익스플로러는 안 됨 - 바벨로도 안됨)
     //익스플로러에서는 스크롤 방식으로 값의 차이를 비교하는 전통적 방식을 사용해야함
     //광고가 노출되었는지 아닌지 등에 사용하는 메소드임(감지되는 칸을 만들어서 dom에 달아줌)
