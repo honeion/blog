@@ -4,14 +4,15 @@ import { push } from 'connected-react-router'
 import { CATEGORY_FIND_FAILURE, CATEGORY_FIND_REQUEST, CATEGORY_FIND_SUCCESS, POST_DELETE_FAILURE, POST_DELETE_REQUEST, POST_DELETE_SUCCESS, POST_DETAIL_LOADING_FAILURE, POST_DETAIL_LOADING_REQUEST, POST_DETAIL_LOADING_SUCCESS, POST_EDIT_LOADING_FAILURE, POST_EDIT_LOADING_REQUEST, POST_EDIT_LOADING_SUCCESS, POST_EDIT_UPLOADING_FAILURE, POST_EDIT_UPLOADING_REQUEST, POST_EDIT_UPLOADING_SUCCESS, POST_LOADING_FAILURE, POST_LOADING_REQUEST, POST_LOADING_SUCCESS, POST_UPLOADING_FAILURE, POST_UPLOADING_REQUEST, POST_UPLOADING_SUCCESS, SEARCH_FAILURE, SEARCH_REQUEST, SEARCH_SUCCESS } from '../types'
 
 // All Posts load
-
-const loadPostAPI = () => {
-    return axios.get("/api/post")
+// inifnity scroll로 수정
+const loadPostAPI = (payload) => {
+    //return axios.get("/api/post")
+    return axios.get(`/api/post/skip/${payload}`);
 }
 
-function* loadPosts() {
+function* loadPosts(action) {
     try {
-        const result = yield call(loadPostAPI) //api에서 불러온것
+        const result = yield call(loadPostAPI, action.payload) //api에서 불러온것
         console.log(result, "loadPosts")
         yield put({
             type: POST_LOADING_SUCCESS,

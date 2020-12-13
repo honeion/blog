@@ -47,6 +47,7 @@ router.post("/image", uploadS3.array("upload", 5), async (req, res, next) => { /
     }
 })
 
+
 // api/post
 router.get('/', async (req, res) => {
     const postFindResult = await Post.find(); //몽고디비에서 모든 것 가져옴
@@ -55,6 +56,30 @@ router.get('/', async (req, res) => {
     console.log(result, "ALL Post Get");
     res.json(result) //마지막 줄에 응답이 나가야함
 })
+
+// convert to infinity scroll
+
+//  @route  GET api/post
+//  @desc   More Loading Posts
+//  @access public
+router.get('/skip/:skip', async(req, res)=> {
+    try {
+        const postCount = await Post.countDocuments()
+        const postFindResult = await Post.find()
+                                         .skip(Number(req.params.skip))
+                                         .limit(6) //skip 수만큼 넘겨서 검색
+        const categoryFindResult = await Category.find();
+        const result = {postFindResult, categoryFindResult, postCount}
+        console.log(result, "Post Get");
+        res.json(result)
+    } catch (error) {
+        console.log(error);
+        res.json({msg:"더 이상 포스트가 없습니다."})
+    }
+})
+
+
+
 
 // @route   POST api/post
 // @desc    Create a Post

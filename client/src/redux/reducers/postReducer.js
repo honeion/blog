@@ -22,7 +22,7 @@ const postReducer = (state = initialState, action) => {
         case POST_LOADING_REQUEST:
             return {
                 ...state, //초기값 복사해오고, react는 비교해야하니까
-                posts: [],
+                //posts: [], 이제는 누적시켜야함
                 loading: true,
             }
         case POST_LOADING_SUCCESS:
@@ -30,6 +30,7 @@ const postReducer = (state = initialState, action) => {
                 ...state,
                 posts: [...state.posts, ...action.payload.postFindResult], //기존 포스트 있으면 가져오고, 추가값은 뒤에 붙여줌
                 categoryFindResult : action.payload.categoryFindResult,
+                postCount : action.payload.postCount, //infinity scroll에서 추가
                 loading: false,
             }
         case POST_LOADING_FAILURE:
