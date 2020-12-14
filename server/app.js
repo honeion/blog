@@ -5,15 +5,19 @@ import hpp from 'hpp'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import cors from 'cors'
+import path from 'path' //절대경로
+
 //Routes
 import postsRoutes from './routes/api/post'
 import userRoutes from './routes/api/user'
 import authRoutes from './routes/api/auth'
 import searchRoutes from './routes/api/search'
 
+
 const app = express()
 const {MONGO_URL} = config.parsed;
 
+const prod = process.env.NODE_ENV === "production";
 
 //서버 보안 보완
 app.use(hpp());
@@ -52,4 +56,12 @@ app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/search', searchRoutes);
 
+//production상태면 빌드되어있는 파일을 사용하고, express server에서 위 주소 제외하고 나머지 주소를 다 받음
+//백엔드 서버 1개만 갖는데, 리액트를 빌드한 파일들을 불러와서 서버를 통해서 작동을 시킬것
+if(prod) { //product상태
+    app.use(express.static(path.join(__dirname,"../client/build")))
+    app.get("*", (req,res)=>{
+        res.sendFile(path.resolve(__dirname, "../client/build", "index.html")) //index.html 파일을 보내줌
+    }) //이렇게 해줘야 라우터문제 때문에 특정주소(북마크로 저장된 것 같은)로 보내줄수 있음
+}
 export default app;
