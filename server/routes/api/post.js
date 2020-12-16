@@ -6,6 +6,7 @@ import Post from '../../models/post'
 import Category from '../../models/category'
 import User from '../../models/user'
 import Comment from '../../models/comments'
+import "@babel/polyfill" //es6문법을 사용하기 때문에 get skip부분에서 오류생길 수 있음
 
 const router = express.Router()
 
