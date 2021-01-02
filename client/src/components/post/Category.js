@@ -12,13 +12,13 @@ const Category = ({posts}) => {
                 Array.isArray(posts)?
                     posts.map(({_id, categoryName, posts}) => {
                         return(
-                        <div key={_id} className="mx-1 mt-1 my_category">
+                        <div key={_id} className="mx-1 mt-1 categoryLink">
                             <Link 
                                 to={`/posts/category/${categoryName}`} 
                                 className="text-dark text-decoration-none"
                             >
                                 <span className = "ml-1">
-                                    <Button color="info">
+                                    <Button className="categoryBtn">
                                         {categoryName}{" "}
                                         <Badge color="light">{posts.length}</Badge>
                                     </Button>

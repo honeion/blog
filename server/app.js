@@ -18,7 +18,7 @@ const app = express()
 const {MONGO_URL} = config.parsed;
 
 const prod = process.env.NODE_ENV === "production";
-
+console.log(prod)
 //서버 보안 보완
 app.use(hpp());
 app.use(helmet());

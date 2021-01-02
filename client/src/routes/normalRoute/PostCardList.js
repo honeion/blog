@@ -17,7 +17,6 @@ const PostCardList = () => {
             payload : 0
         })
     }, [dispatch]) //의존성값을 넣어줘서 1번만 하고 끝나지 않도록
-
     ////////////////////////
     //6개씩
     const skipNumberRef = useRef(0) //전 생애주기에서 살아남을 수 있는 유일한 것
@@ -109,11 +108,12 @@ const PostCardList = () => {
     //lastPostElementRef가 감지가 되면 post를 서버에 요청하고 loading 및 growingspinner가 돌아감
     //threshold 값을 넣지 않으면 화면이 크게 축소된 경우 div값이 맨 밑에서 측정되지 못하는 경우때문에 필요함
     ////////////////////////
-
+    //Row className="border-bottom border-top border-primary py-2 mb-3">
+    console.log(posts)
     return (
         <Fragment>
             <Helmet title="Home" />
-            <Row className="border-bottom border-top border-primary py-2 mb-3">
+            <Row className="categoryList py-2 mb-3">
                 <Category posts = {categoryFindResult} />
             </Row>
             <Row>

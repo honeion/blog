@@ -18,6 +18,8 @@ import Profile from "./normalRoute/Profile";
 //위에 적은 주소 외 다른 주소는 다 홈으로 <Redirect from ="*" to="/" />
 const MyRouter = () => (
     <Fragment>
+        <div className="page-hero"></div>
+        <div className="page-body">
         <AppNavbar />
         <Header />
         <Container id="main-body">
@@ -34,6 +36,7 @@ const MyRouter = () => (
             </Switch>
         </Container>
         <Footer />
+        </div>
     </Fragment>
 );// ()만 써서 {return ()} 생략 가능
 //<Fragment></Fragment> = <></> 원래는 1개 컴포넌트만 가능했었음

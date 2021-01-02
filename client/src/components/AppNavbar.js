@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { LOGOUT_REQUEST } from "../redux/types"
 import RegisterModal from "./auth/RegisterModal"
 import SearchInput from "./search/SearchInput"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
 const AppNavbar = () => {
     //인증되었을때 변화
     const [isOpen, setIsOpen] = useState(false);//처음엔 닫아진 상태
@@ -94,7 +96,9 @@ const AppNavbar = () => {
                     <Link to="/" className="text-white text-decoration-none">
                         Side Project's Blog(Honeion Blog)
                     </Link>
-                    <NavbarToggler onClick={handleToggle} />
+                    <NavbarToggler onClick={handleToggle}>
+                        <FontAwesomeIcon icon={faBars}/>
+                    </NavbarToggler>
                     <Collapse isOpen={isOpen} navbar>
                         <SearchInput isOpen={isOpen}/>
                         <Nav className="ml-auto d-flex justify-content-around" navbar>
